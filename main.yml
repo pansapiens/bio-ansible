@@ -7,6 +7,9 @@
     - brew_dir: /software/linuxbrew
     - ref_dir: /references
 
+  roles:
+  - { role: jnv.unattended-upgrades, unattended_automatic_reboot: false }
+
   pre_tasks:
     - name: Create sw-installer user
       user: name=sw-installer comment="Software install user" group=adm
