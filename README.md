@@ -4,7 +4,11 @@ Requirements
 You need a `ansible` installed locally
 
     sudo pip install ansible
+
+Install additional Ansible roles from Ansible Galaxy:
     
+    ansible-galaxy install -r requirements.yml -p roles/
+
 You need to manually download some packages that require license agreements.  See `tarballs/README`
 
 By default software will be installed to /software.  So, if you want this to be on a separate mount, set that up before running ansible.
