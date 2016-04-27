@@ -7,7 +7,7 @@ You need a `ansible` installed locally
 
 Install additional Ansible roles from Ansible Galaxy:
     
-    ansible-galaxy install -r requirements.yml -p roles/
+    ansible-galaxy install -r requirements.yml -p galaxy-roles/
 
 You need to manually download some packages that require license agreements.  See `tarballs/README`
 
