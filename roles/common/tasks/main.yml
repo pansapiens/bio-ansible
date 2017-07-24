@@ -1,6 +1,6 @@
 ---
-
 - include: locales.yml
+- include: sh_is_bash.yml
 - include: apt.yml
 - include: python.yml
 - include: pip.yml
