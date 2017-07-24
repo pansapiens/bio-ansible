@@ -1,0 +1,20 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: ubuntu-xenial
+    image: ubuntu:xenial
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+scenario:
+  name: common
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

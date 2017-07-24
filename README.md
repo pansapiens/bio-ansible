@@ -66,6 +66,19 @@ ansible-playbook -i hosts main.yml --tags samtools,star,subread
 
 _You can always add `-v` or `-vvv` options for verbose mode_
 
+## Testing with Molecule
+
+Roles can be tested using [Molecule](https://molecule.readthedocs.io), with
+tests written using the
+[testinfra API](https://testinfra.readthedocs.io/en/latest/modules.html).
+
+To test the `common` role:
+
+```BASH
+cd roles/common
+molecule test -s common
+```
+
 ## Frequently asked questions
 
 - [Playbook breakdown](supplementary/playbook_breakdown.md)
