@@ -8,3 +8,5 @@ tarballs/*
 !tarballs/download_*.sh
 *users_list.txt
 vault
+.molecule
+*.pyc
