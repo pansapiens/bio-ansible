@@ -1,21 +1,27 @@
 ---
 
+- name: apt-get install ubuntu-release-upgrader-core
+  tags: motd
+  apt:
+    name: "{{ item }}"
+    state: present
+  environment:
+    - LANG: en_US.UTF-8
+    - LC_ALL: en_US.UTF-8
+  with_items:
+    - ubuntu-release-upgrader-core
+
 - name: turn off new releases notifications
+  tags: motd
   file:
     dest: /etc/update-motd.d/91-release-upgrade
     state: file
     mode: 0644
 
-  tags: motd
-
 - name: copy lmod notifications to /etc/update-motd.d
+  tags: motd
   template:
     src: 60-lmod-recent
     dest: /etc/update-motd.d/
     mode: 0755
     backup: yes
-
-  tags: motd
-
-
-

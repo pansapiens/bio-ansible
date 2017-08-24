@@ -1,0 +1,16 @@
+---
+# https://docs.travis-ci.com/user/docker/
+#
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+before_install:
+  - docker build -t MonashBioinformaticsPlatform/bio-ansbile:latest -f docker/Dockerfile-local .
+  - docker run -d MonashBioinformaticsPlatform/bio-ansbile /bin/sh -c "module load RNAsik-pipe; RNAsik-pipe -version"
+
+script:
+  - module load RNAsik-pipe; RNAsik-pipe -version
