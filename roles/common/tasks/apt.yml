@@ -119,5 +119,3 @@
     - zsh
     - texlive
     - texlive-latex-extra
-
-  tags: apt
