@@ -1,0 +1,9 @@
+---
+- name: Read cephfs private variables
+  tags: ['cephfs', 'storage']
+  include_vars:
+    file: private/vars/vault_cephfs.yml
+
+- include: install.yml
+- include: configure.yml
+- include: mount.yml
