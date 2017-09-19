@@ -25,6 +25,7 @@
     - sysstat
     - ethtool
     - iotop
+    - bmon
     - xinetd
     # nfs stuff
     - nfs-common
@@ -104,6 +105,7 @@
     - pandoc-citeproc
     - vim
     - tmux
+    - screen
     - byobu
     - mosh
     - git
@@ -113,6 +115,5 @@
     - zsh
     - texlive
     - texlive-latex-extra
-    - bmon
 
   tags: apt
