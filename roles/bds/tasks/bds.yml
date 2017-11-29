@@ -11,28 +11,28 @@
 - name: check that /usr/bin/java exists
   tags: bds
   command: /usr/bin/java
-  register: java_local
+  register: system_java
   ignore_errors: true
 
-- name: check oracle java exists
+- name: Check Oracle Java LMOD module exists
   tags: bds
   stat:
     path: "{{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}"
-  register: java_tar
+  register: lmod_oracle_java
 
-- name: build BigDataScript {{ version }} with java_tar
+- name: build BigDataScript {{ version }} with lmod_oracle_java
   tags: bds
   shell: export JAVA_HOME={{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}; cd {{ source_dir }}/BigDataScript-{{ version }}/; ./scripts/install.sh
   args:
     creates: "{{ local_home }}/.bds/bds"
-  when: java_tar.stat.isdir is defined and java_tar.stat.isdir
+  when: lmod_oracle_java
 
-- name: build BigDataScript {{ version }} with java_local
+- name: build BigDataScript {{ version }} with system_java
   tags: bds
   shell: cd {{ source_dir }}/BigDataScript-{{ version }}/; ./scripts/install.sh
   args:
     creates: "{{ local_home }}/.bds/bds"
-  when: java_local and java_tar.stat.isdir is not defined
+  when: system_java
 
 - name: moving executable bds {{ version }} to apps directory
   tags: bds
