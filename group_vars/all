@@ -33,3 +33,19 @@ r_base_mirror: "https://cran.csiro.au"
 r_intro_version: gh-pages
 r_more_version: gh-pages
 r_de_analysis_version: gh-pages
+
+#
+# Java options
+#
+# There are several options for installing Java - the system default
+# version packaged by the distro (requires sudo), webup8 Oracle Java
+# PPA (requires sudo), or a locally downloaded Oracle Java tarball (no sudo
+# required, installs as an LMOD module)
+
+# java installation to use ("distro", "oracle_ppa" or "oracle_tarball")
+java_flavour: "oracle_tarball"
+
+# Oracle Java tarball version (must match tarball in tarballs directory)
+jdk_major: 8
+jdk_minor: 144
+java_oracle_version: "{{ jdk_major }}u{{ jdk_minor }}"

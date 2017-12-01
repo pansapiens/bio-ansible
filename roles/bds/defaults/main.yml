@@ -1,5 +1,7 @@
 ---
 
+java_flavour: "oracle_tarball"
+
 is_slurm_cluster: false
 
 bds_tmpDir: "/tmp"

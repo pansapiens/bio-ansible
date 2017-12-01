@@ -1,0 +1,13 @@
+---
+
+- name: Install the distro default OpenJDK
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - default-jdk
+    - default-jre
+    - ant
+    - maven
+    # - openjdk-8-jdk
+    # - openjdk-8-jre

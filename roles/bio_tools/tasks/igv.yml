@@ -23,25 +23,23 @@
 
   tags: igv
 
-- name: check that /usr/bin/java exists
-  command: /usr/bin/java
-  register: java_local
+- name: Check that /usr/bin/java exists
+  tags: igv
+  command: "/usr/bin/java -version"
+  register: system_java
   ignore_errors: true
 
+- name: Check Oracle Java LMOD module exists
   tags: igv
-
-- name: check oracle java exists
   stat:
     path: "{{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}"
-  register: java_tar
-
-  tags: igv
+  register: lmod_oracle_java
 
 - name: build igv {{ version }}
   shell: export JAVA_HOME={{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}; cd {{ source_dir }}/igv-{{ version }}; ant
   args:
     creates: "{{ source_dir }}/igv-{{ version }}/igv.jar"
-  when: java_tar.stat.isdir 
+  when: lmod_oracle_java
 
   tags: igv
 
@@ -49,15 +47,15 @@
   shell: cd {{ source_dir }}/igv-{{ version }}; ant
   args:
     creates: "{{ source_dir }}/igv-{{ version }}/igv.jar"
-  when: java_local and java_tar.stat.isdir is not defined
+  when: system_java and not lmod_oracle_java
 
   tags: igv
 
-- name: build igv {{ version }}
+- name: build igvtools {{ version }}
   shell: export JAVA_HOME={{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}; cd {{ source_dir }}/igv-{{ version }}; ant -lib {{ source_dir }}/igv-{{ version }}/extras -f scripts/build-tools.xml
   args:
     creates: "{{ source_dir }}/igv-{{ version }}/igvtools-dist/igvtools.jar"
-  when: java_tar.stat.isdir 
+  when: lmod_oracle_java
 
   tags: igv
 
@@ -65,7 +63,7 @@
   shell: cd {{ source_dir }}/igv-{{ version }}; ant -lib {{ source_dir }}/igv-{{ version }}/extras -f scripts/build-tools.xml
   args:
     creates: "{{ source_dir }}/igv-{{ version }}/igvtools-dist/igvtools.jar"
-  when: java_local and java_tar.stat.isdir is not defined
+  when: system_java and not lmod_oracle_java
 
   tags: igv
 

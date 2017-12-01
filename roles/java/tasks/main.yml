@@ -1,4 +1,13 @@
 ---
 
-#- include: openjdk.yml version={{ openjdk_version }}
-- include: oracle.yml version={{ java_oracle_version }}
+- include_tasks: distro.yml
+  tags: java
+  when: java_flavour == 'distro'
+
+- include_tasks: oracle_ppa.yml
+  tags: java
+  when: java_flavour == 'oracle_ppa'
+
+- include_tasks: oracle_tarball.yml version={{ java_oracle_version }}
+  tags: java
+  when: java_flavour == 'oracle_tarball'

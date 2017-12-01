@@ -5,8 +5,8 @@
   register: python3_v_str
 
 - name: Debug find python3 version
-  debug: 
-    msg: "{{ python3_v_str.stdout }}" 
+  debug:
+    msg: "{{ python3_v_str.stdout }}"
   tags: ["always", "python"]
 
 # Python 3.x prints --version to stdout
@@ -21,7 +21,7 @@
 
 - name: Debug find python2 version
   debug:
-    msg: "{{ python2_v_str.stderr }}" 
+    msg: "{{ python2_v_str.stderr }}"
   tags: ["always", "python"]
 
 # Python 2.x prints --version to stderr (not stdout like Python 3.x !)
@@ -32,6 +32,27 @@
 - name: Set conda executable path
   tags: ["always"]
   set_fact: conda_bin={{ apps_dir }}/conda/bin/conda
+
+- name: Check that /usr/bin/java exists
+  tags: ["always", "java"]
+  command: "/usr/bin/java -version"
+  register: system_java_check
+  ignore_errors: true
+
+- name: Set system_java variable
+  tags: ["always", "java"]
+  set_fact: system_java='system_java_check and (java_flavour == "oracle_ppa" or java_flavour == "distro")'
+
+- name: Check Oracle Java LMOD module exists
+  tags: ["always", "java"]
+  stat:
+    path: "{{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}"
+  register: lmod_oracle_java_check
+
+- name: Set lmod_oracle_java variable
+  tags: ["always", "java"]
+  set_fact: lmod_oracle_java='lmod_oracle_java_check.stat.isdir and java_flavour == "oracle_tarball"'
+
 
 - include: conda.yml
 

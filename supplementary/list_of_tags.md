@@ -1,4 +1,15 @@
-# List of availbale tags
+# List of available tags
+
+The best way to determine which tags are available for each playbook is to run:
+
+```sh
+ansible-playbook --list-tags common.yml
+ansible-playbook --list-tags bio.yml
+ansible-playbook --list-tags interactive.yml
+```
+
+Note that when running tasks via tag(s), role dependencies (in <role>meta/main.yml)
+are ignored (unless the dependency also contains that tag).
 
 ### Need `sudo`
 
@@ -26,8 +37,10 @@
 
 #### bio.yml
 
+- `java` - the `java_flavour` variable determines Java installation method: 
+           *oracle_tarball* (no sudo), *distro* (sudo), *oracle_ppa* (sudo)
+
 - `dirs`
-- `java_oracle`
 
 - `bds`
 - `bwa`

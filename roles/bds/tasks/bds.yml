@@ -1,5 +1,26 @@
 ---
 
+- name: Check that /usr/bin/java exists
+  tags: ["always", "java"]
+  command: "/usr/bin/java -version"
+  register: system_java_check
+  ignore_errors: true
+
+- name: Set system_java variable
+  tags: ["always", "java"]
+  set_fact: system_java='system_java_check and (java_flavour == "oracle_ppa" or java_flavour == "distro")'
+
+- name: Check Oracle Java LMOD module exists
+  tags: ["always", "java"]
+  stat:
+    path: "{{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}"
+  register: lmod_oracle_java_check
+
+- name: Set lmod_oracle_java variable
+  tags: ["always", "java"]
+  set_fact: lmod_oracle_java='lmod_oracle_java_check.stat.isdir and java_flavour == "oracle_tarball"'
+
+
 - name: download BigDataScript {{ version }}
   tags: bds
   git:
@@ -8,17 +29,12 @@
     version: "v{{ version }}"
     update: no
 
-- name: check that /usr/bin/java exists
+- name: build BigDataScript {{ version }} with system_java
   tags: bds
-  command: /usr/bin/java
-  register: system_java
-  ignore_errors: true
-
-- name: Check Oracle Java LMOD module exists
-  tags: bds
-  stat:
-    path: "{{ apps_dir }}/jdk1.{{ jdk_major }}.0_{{ jdk_minor }}"
-  register: lmod_oracle_java
+  shell: cd {{ source_dir }}/BigDataScript-{{ version }}/; ./scripts/install.sh
+  args:
+    creates: "{{ local_home }}/.bds/bds"
+  when: system_java and not lmod_oracle_java
 
 - name: build BigDataScript {{ version }} with lmod_oracle_java
   tags: bds
@@ -26,13 +42,6 @@
   args:
     creates: "{{ local_home }}/.bds/bds"
   when: lmod_oracle_java
-
-- name: build BigDataScript {{ version }} with system_java
-  tags: bds
-  shell: cd {{ source_dir }}/BigDataScript-{{ version }}/; ./scripts/install.sh
-  args:
-    creates: "{{ local_home }}/.bds/bds"
-  when: system_java
 
 - name: moving executable bds {{ version }} to apps directory
   tags: bds
